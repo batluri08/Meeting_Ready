@@ -12,8 +12,8 @@ briefing that answers the seven questions the team actually asks, with every sen
 - **Safe by design.** People see only the clients they cover, and names are masked before anything reaches
   the AI.
 
-A supervisor sends four agents to gather evidence in parallel; Claude Opus 5.5 writes and Haiku 5.5 reads
-the emails. Follow-up chat, suggested tasks and PDF export are built in. A prototype, running on a
+A supervisor sends four agents to gather evidence in parallel, and an AI model reads the emails and
+writes the briefing. Follow-up chat, suggested tasks and PDF export are built in. A prototype, running on a
 synthetic data pack.
 
 ## Run it
