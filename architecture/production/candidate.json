@@ -1,0 +1,793 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Client Meeting Briefing: System Architecture (Production)",
+    "locale": "en",
+    "output": "architecture/production/production.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "sources",
+        "label": "Data sources and engineering",
+        "focus": [
+          "crm",
+          "core",
+          "m365",
+          "sharepoint",
+          "newsfeed",
+          "cdc",
+          "graph",
+          "docparse",
+          "newsp",
+          "dbt",
+          "mdm",
+          "acl",
+          "embed",
+          "warehouse",
+          "qdrant"
+        ],
+        "note": "Real systems replace the synthetic pack: CDC and dbt for tables, Graph and parsers for documents, all tagged with permissions."
+      },
+      {
+        "id": "engine",
+        "label": "Same briefing engine",
+        "focus": [
+          "workflow",
+          "supervisor",
+          "agents",
+          "writer",
+          "verifier",
+          "gateway"
+        ],
+        "note": "Supervisor, 4 agents, writer and verifier are unchanged; tools become MCP servers and a workflow engine runs them."
+      },
+      {
+        "id": "access",
+        "label": "Access controls",
+        "focus": [
+          "identity",
+          "api",
+          "mcp",
+          "warehouse",
+          "qdrant",
+          "acl",
+          "gateway"
+        ],
+        "note": "SSO and on-behalf-of tokens, source permissions on every chunk, row-level security, information barriers."
+      },
+      {
+        "id": "evaluation",
+        "label": "Evaluation and monitoring",
+        "focus": [
+          "evalmon",
+          "postgres",
+          "verifier",
+          "gateway"
+        ],
+        "note": "Offline gate in CI, live eval on every prompt or model change, sampled RAGAS judge and analyst feedback in production."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "crm",
+      "type": "external",
+      "label": "CRM",
+      "sublabel": "Salesforce or Dynamics",
+      "tag": "accounts · contacts · deals",
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "core",
+      "type": "external",
+      "label": "Core banking + billing",
+      "sublabel": "revenue · payments · cards",
+      "tag": "+ service desk tickets",
+      "pos": [
+        40,
+        130
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "m365",
+      "type": "external",
+      "label": "Microsoft 365",
+      "sublabel": "Outlook mail + calendar",
+      "tag": "Teams transcripts",
+      "pos": [
+        40,
+        250
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "sharepoint",
+      "type": "external",
+      "label": "SharePoint + research",
+      "sublabel": "call reports · PDFs",
+      "pos": [
+        40,
+        340
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "newsfeed",
+      "type": "external",
+      "label": "Licensed news",
+      "sublabel": "Factiva · Refinitiv feeds",
+      "tag": "approved sources only",
+      "pos": [
+        40,
+        430
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "identity",
+      "type": "security",
+      "label": "Entra ID",
+      "sublabel": "SSO · groups · coverage",
+      "tag": "information barriers",
+      "pos": [
+        40,
+        660
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "cdc",
+      "type": "backend",
+      "label": "CDC / ELT",
+      "sublabel": "Fivetran or Debezium",
+      "tag": "near real time",
+      "pos": [
+        260,
+        85
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "graph",
+      "type": "backend",
+      "label": "Graph webhooks",
+      "sublabel": "new mail, meetings, Teams",
+      "tag": "approved mailboxes",
+      "pos": [
+        260,
+        250
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "docparse",
+      "type": "backend",
+      "label": "Parse + OCR",
+      "sublabel": "layout-aware parser",
+      "tag": "raw files to object store",
+      "pos": [
+        260,
+        340
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "newsp",
+      "type": "backend",
+      "label": "News pipeline",
+      "sublabel": "story groups · conflicts",
+      "tag": "licence terms kept",
+      "pos": [
+        260,
+        430
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "dbt",
+      "type": "backend",
+      "label": "dbt models + tests",
+      "sublabel": "client 360 · DQ gates",
+      "tag": "bad batches quarantined",
+      "pos": [
+        480,
+        40
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "mdm",
+      "type": "backend",
+      "label": "Client master (MDM)",
+      "sublabel": "LEI · reg no. · domain",
+      "tag": "steward review queue",
+      "pos": [
+        480,
+        130
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "acl",
+      "type": "security",
+      "label": "PII + access tagging",
+      "sublabel": "source permissions per chunk",
+      "tag": "restricted flagged",
+      "pos": [
+        480,
+        340
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "embed",
+      "type": "backend",
+      "label": "Chunk + embed",
+      "sublabel": "same chunking · Voyage",
+      "tag": "versioned re-embedding",
+      "pos": [
+        700,
+        340
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "qdrant",
+      "type": "database",
+      "label": "Qdrant cluster",
+      "sublabel": "dense + sparse vectors",
+      "tag": "ACL payload filters",
+      "pos": [
+        920,
+        340
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "warehouse",
+      "type": "database",
+      "label": "Snowflake / Databricks",
+      "sublabel": "governed views",
+      "tag": "row-level security",
+      "pos": [
+        1140,
+        85
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "mcp",
+      "type": "security",
+      "label": "MCP tool servers",
+      "sublabel": "crm · warehouse-sql (SQL guard) · mail · docs · news · calendar, as the banker",
+      "pos": [
+        480,
+        560
+      ],
+      "size": [
+        610,
+        64
+      ]
+    },
+    {
+      "id": "agents",
+      "type": "backend",
+      "label": "4 agents + check",
+      "sublabel": "structured·email·notes·news",
+      "tag": "+ commitments check",
+      "pos": [
+        920,
+        660
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "gateway",
+      "type": "security",
+      "label": "AI gateway",
+      "sublabel": "masking · routing · budgets",
+      "tag": "OpenTelemetry traces",
+      "pos": [
+        1140,
+        660
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "claude",
+      "type": "external",
+      "label": "Claude (approved region)",
+      "sublabel": "Opus 5.5 · Haiku 5.5",
+      "tag": "zero data retention",
+      "pos": [
+        1380,
+        540
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "evalmon",
+      "type": "backend",
+      "label": "Eval + monitoring",
+      "sublabel": "CI gate · 5% RAGAS sample",
+      "tag": "analyst edits feed gold set",
+      "pos": [
+        1140,
+        900
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "banker",
+      "type": "external",
+      "label": "Relationship banker",
+      "sublabel": "analyst or senior",
+      "pos": [
+        40,
+        790
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "app",
+      "type": "frontend",
+      "label": "Web app + Teams add-in",
+      "sublabel": "ready 24 h before meeting",
+      "pos": [
+        260,
+        790
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "Briefing API",
+      "sublabel": "FastAPI · coverage check",
+      "pos": [
+        480,
+        790
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "workflow",
+      "type": "backend",
+      "label": "Temporal workflow",
+      "sublabel": "started by calendar event",
+      "tag": "durable retries",
+      "pos": [
+        700,
+        790
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "supervisor",
+      "type": "backend",
+      "label": "Supervisor (Opus)",
+      "sublabel": "same plan + policy",
+      "pos": [
+        920,
+        790
+      ],
+      "size": [
+        160,
+        64
+      ]
+    },
+    {
+      "id": "writer",
+      "type": "backend",
+      "label": "Section writer (Opus)",
+      "sublabel": "7 cited answers",
+      "pos": [
+        1140,
+        790
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "verifier",
+      "type": "security",
+      "label": "Verifier",
+      "sublabel": "citations + numbers",
+      "tag": "+ uncertainty panel",
+      "pos": [
+        1380,
+        790
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "postgres",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "runs · tasks · audit",
+      "tag": "append-only audit",
+      "pos": [
+        1380,
+        900
+      ],
+      "size": [
+        170,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Data platform (Airflow or Dagster orchestrates batch + streaming)",
+      "wraps": [
+        "cdc",
+        "graph",
+        "docparse",
+        "newsp",
+        "dbt",
+        "mdm",
+        "acl",
+        "embed",
+        "qdrant",
+        "warehouse"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Briefing engine (same foundation as the prototype)",
+      "wraps": [
+        "agents",
+        "gateway",
+        "workflow",
+        "supervisor",
+        "writer",
+        "verifier"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "crm-cdc",
+      "from": "crm",
+      "to": "cdc",
+      "label": "CDC"
+    },
+    {
+      "id": "core-cdc",
+      "from": "core",
+      "to": "cdc",
+      "label": "CDC"
+    },
+    {
+      "id": "m365-graph",
+      "from": "m365",
+      "to": "graph",
+      "label": "events"
+    },
+    {
+      "id": "sp-parse",
+      "from": "sharepoint",
+      "to": "docparse",
+      "label": "files"
+    },
+    {
+      "id": "news-pipe",
+      "from": "newsfeed",
+      "to": "newsp",
+      "label": "feed"
+    },
+    {
+      "id": "cdc-dbt",
+      "from": "cdc",
+      "to": "dbt",
+      "label": "raw"
+    },
+    {
+      "id": "cdc-mdm",
+      "from": "cdc",
+      "to": "mdm",
+      "label": "accounts"
+    },
+    {
+      "id": "dbt-wh",
+      "from": "dbt",
+      "to": "warehouse",
+      "label": "client tables"
+    },
+    {
+      "id": "mdm-wh",
+      "from": "mdm",
+      "to": "warehouse",
+      "label": "client ids"
+    },
+    {
+      "id": "graph-acl",
+      "from": "graph",
+      "to": "acl",
+      "label": "messages"
+    },
+    {
+      "id": "parse-acl",
+      "from": "docparse",
+      "to": "acl",
+      "label": "text"
+    },
+    {
+      "id": "news-acl",
+      "from": "newsp",
+      "to": "acl",
+      "label": "stories"
+    },
+    {
+      "id": "acl-embed",
+      "from": "acl",
+      "to": "embed",
+      "label": "tagged"
+    },
+    {
+      "id": "embed-qdrant",
+      "from": "embed",
+      "to": "qdrant",
+      "label": "upsert"
+    },
+    {
+      "id": "banker-app",
+      "from": "banker",
+      "to": "app",
+      "label": "SSO",
+      "variant": "emphasis"
+    },
+    {
+      "id": "app-api",
+      "from": "app",
+      "to": "api",
+      "label": "REST",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-workflow",
+      "from": "api",
+      "to": "workflow",
+      "label": "start",
+      "variant": "emphasis"
+    },
+    {
+      "id": "workflow-sup",
+      "from": "workflow",
+      "to": "supervisor",
+      "label": "run",
+      "variant": "emphasis"
+    },
+    {
+      "id": "sup-writer",
+      "from": "supervisor",
+      "to": "writer",
+      "label": "results",
+      "variant": "emphasis"
+    },
+    {
+      "id": "writer-verifier",
+      "from": "writer",
+      "to": "verifier",
+      "label": "checks",
+      "variant": "emphasis"
+    },
+    {
+      "id": "verifier-pg",
+      "from": "verifier",
+      "to": "postgres",
+      "label": "save",
+      "variant": "emphasis"
+    },
+    {
+      "id": "identity-api",
+      "from": "identity",
+      "to": "api",
+      "label": "tokens",
+      "variant": "security"
+    },
+    {
+      "id": "sup-agents",
+      "from": "supervisor",
+      "to": "agents",
+      "label": "9 tasks"
+    },
+    {
+      "id": "agents-mcp",
+      "from": "agents",
+      "to": "mcp",
+      "label": "tool calls",
+      "variant": "security"
+    },
+    {
+      "id": "mcp-qdrant",
+      "from": "mcp",
+      "to": "qdrant",
+      "label": "filtered search",
+      "variant": "security"
+    },
+    {
+      "id": "mcp-wh",
+      "from": "mcp",
+      "to": "warehouse",
+      "label": "guarded SQL",
+      "variant": "security",
+      "fromSide": "right",
+      "toSide": "bottom"
+    },
+    {
+      "id": "agents-gateway",
+      "from": "agents",
+      "to": "gateway",
+      "label": "Haiku"
+    },
+    {
+      "id": "writer-gateway",
+      "from": "writer",
+      "to": "gateway",
+      "label": "Opus"
+    },
+    {
+      "id": "gateway-claude",
+      "from": "gateway",
+      "to": "claude",
+      "label": "masked",
+      "variant": "security"
+    },
+    {
+      "id": "pg-eval",
+      "from": "postgres",
+      "to": "evalmon",
+      "label": "sampled runs",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Where the data comes from",
+      "items": [
+        "CRM, core banking, billing, payments ops and the service desk: change data capture (Fivetran or Debezium) into the warehouse",
+        "Outlook mail and calendar, Teams transcripts: Microsoft Graph change notifications, from compliance-approved mailboxes",
+        "SharePoint documents and research PDFs: layout-aware parser with OCR; raw files kept in object storage",
+        "Licensed news feeds (Factiva, Refinitiv): approved sources only, licence terms stored per article",
+        "Identity: Entra ID groups, the coverage book and information-barrier lists"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Data engineering",
+      "items": [
+        "Airflow or Dagster orchestrates nightly backfills and streaming updates, with freshness alerts",
+        "dbt builds client-360 tables; data-quality tests (dbt or Great Expectations) quarantine bad batches",
+        "Client master (MDM) matches on LEI, registration number, domain, then name; a steward reviews unsure matches",
+        "Every chunk carries its source permissions and a restricted flag before it is embedded",
+        "Same chunking as the prototype; Voyage embeddings; a model change re-embeds into a new, versioned collection"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Same foundation as the prototype",
+      "items": [
+        "Supervisor (Opus), 4 agents (structured, email, notes, news) and the commitments check, unchanged",
+        "Section writer, verifier and code-built uncertainty panel, unchanged",
+        "What changes: tools become MCP servers, Temporal runs the workflow, SQLite becomes the warehouse + PostgreSQL",
+        "Trigger: a calendar event starts the briefing 24 hours before the meeting; on-demand still works"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Access controls (where)",
+      "items": [
+        "Sign-in with Entra ID; every MCP tool call runs with the banker's own on-behalf-of token",
+        "Source permissions copied onto every chunk and filtered inside Qdrant",
+        "Warehouse row-level security plus the SQL guard on every generated query",
+        "Information barriers enforced in the tools and the index; restricted content only to approved model routes"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Guardrails",
+      "items": [
+        "Gateway: name masking, allowed-id schemas, untrusted-text wrapping, budgets and rate limits",
+        "Verifier and code-built uncertainty panel, as in the prototype",
+        "CRM write-backs and emails stay drafts until a person approves them",
+        "OpenTelemetry traces per step; append-only audit trail sent to security monitoring"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Evaluation and monitoring",
+      "items": [
+        "Offline evaluation in CI on every change; a failed zero-target check blocks release",
+        "Live evaluation whenever a prompt, model or tool changes",
+        "RAGAS-style judge (Haiku) on a 5% sample of real briefings, with alerts on drops",
+        "Analyst edits, citation clicks and approvals grow the answer key"
+      ]
+    }
+  ]
+}

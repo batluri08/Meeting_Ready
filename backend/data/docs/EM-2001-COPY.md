@@ -1,0 +1,16 @@
+---
+id: EM-2001-COPY
+type: email
+date: 2026-10-28
+account_id: CRM-1012
+from: Maria Lopes <maria.lopes@haldenmedical.com>
+to: Daniel Okafor
+subject: Payroll rejections
+sensitivity: normal
+---
+Daniel,
+
+Our payroll file was rejected twice this month and some staff were paid late. This is not acceptable.
+Please send a root-cause report by 20 November. I will want to discuss this at our next meeting.
+
+Maria

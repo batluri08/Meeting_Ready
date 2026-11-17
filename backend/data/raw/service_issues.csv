@@ -1,0 +1,7 @@
+issue_id,account_id,opened_at,closed_at,severity,status,summary
+ISS-1001,CRM-1001,2026-10-21,,3,open,Card statement export missing cost-centre field
+ISS-1002,CRM-1001,2026-11-04,,3,open,Trade finance portal login delays for two users
+ISS-2001,CRM-1012,2026-10-09,,2,open,Payroll file rejected twice; staff payments delayed
+ISS-2002,CRM-1002,2026-08-03,2026-08-05,4,closed,Statement PDF formatting
+ISS-3001,CRM-1003,2026-07-14,2026-07-20,3,closed,Card limit change not applied
+ISS-4001,CRM-1004,2026-10-30,,3,open,Supply chain finance invoice upload error

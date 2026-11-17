@@ -1,0 +1,26 @@
+{
+  "client": "Halden Medical Group",
+  "client_id": "CLT-002",
+  "meeting_id": "MTG-2",
+  "note": "Hand-written answer key for the analyst view (Priya). Restricted content must NOT appear; only the fact that it exists.",
+  "facts": [
+    {"section": "profile", "pattern": "Healthcare|hospital", "why": "Who the client is"},
+    {"section": "profile", "pattern": "Maria Lopes", "why": "Current CFO (not the stale J. Park)"},
+    {"section": "profile", "pattern": "6\\.1", "why": "Satisfaction now"},
+    {"section": "what_changed", "pattern": "payroll", "why": "Payroll issue and emails since the last meeting"},
+    {"section": "what_changed", "pattern": "OPP-2001|Negotiation", "why": "Deal moved to negotiation"},
+    {"section": "commitments", "pattern": "root.cause|ACT-2001", "why": "Open action: root-cause report"},
+    {"section": "commitments", "pattern": "compensation", "why": "Untracked ask found only in an email"},
+    {"section": "metrics", "pattern": "91\\.2", "why": "STP rate dropped"},
+    {"section": "metrics", "pattern": "8\\.5[^.]*6\\.1|6\\.1[^.]*8\\.5", "why": "Satisfaction 8.5 to 6.1"},
+    {"section": "metrics", "pattern": "38 days|ISS-2001", "why": "Sev-2 issue open 38 days"},
+    {"section": "metrics", "pattern": "29 days|OPP-2001", "why": "Deal closing within 60 days"},
+    {"section": "opportunities", "pattern": "cash pooling|consolidat|one bank", "why": "Single-bank cash management"},
+    {"section": "news", "pattern": "Leeds", "why": "New diagnostic centre"},
+    {"section": "uncertainty", "pattern": "J\\. Park", "why": "Out-of-date CFO statement"},
+    {"section": "uncertainty", "pattern": "Restricted information exists", "why": "Restricted data exists (count only)"}
+  ],
+  "signals": ["issue_aged", "pipeline_closing", "satisfaction_drop", "stp_low"],
+  "forbidden": ["OPP-2002", "NT-2003", "Atlas", "2,500,000", "2.5m", "clinic chain", "acquisition", "Kestrel", "Corvan", "Larkspur"],
+  "forbidden_docs": ["NT-2003"]
+}

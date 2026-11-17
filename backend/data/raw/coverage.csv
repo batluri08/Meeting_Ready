@@ -1,0 +1,12 @@
+account_id,user_id,role,start_date
+CRM-1001,U-ANA,Analyst,2025-01-06
+CRM-1001,U-SEN,Relationship lead,2020-03-02
+CRM-1002,U-ANA,Analyst,2025-01-06
+CRM-1002,U-SEN,Relationship lead,2019-04-01
+CRM-1003,U-ANA,Analyst,2025-01-06
+CRM-1003,U-SEN,Relationship lead,2022-01-17
+CRM-1004,U-SEN,Relationship lead,2018-05-21
+CRM-1005,U-ANA2,Analyst,2024-02-01
+CRM-1006,U-ANA2,Relationship lead,2019-02-11
+CRM-1007,U-ANA2,Relationship lead,2023-06-30
+CRM-1008,U-ANA2,Relationship lead,2024-08-19

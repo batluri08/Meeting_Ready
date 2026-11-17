@@ -1,0 +1,10 @@
+account_id,name,domain,industry,region,segment,tier,client_since
+CRM-1001,Kestrel Foods Ltd,kestrelfoods.com,Food distribution,UK & Europe,Mid-market,Gold,2020-03-02
+CRM-1002,Halden Medical Group,haldenmedical.com,Healthcare providers,UK,Large corporate,Platinum,2016-09-12
+CRM-1003,Corvan Logistics,corvanlogistics.com,Logistics,UK & Europe,Mid-market,Silver,2022-01-17
+CRM-1004,Larkspur Retail plc,larkspurretail.co.uk,Retail,UK,Large corporate,Gold,2018-05-21
+CRM-1005,Meridian Textiles,meridiantextiles.com,Manufacturing,South Asia,Mid-market,Silver,2021-11-03
+CRM-1006,Kestrel Fuels plc,kestrelfuels.com,Energy,UK,Large corporate,Gold,2019-02-11
+CRM-1007,Pellow Engineering,pellow-eng.com,Engineering,UK,Mid-market,Bronze,2023-06-30
+CRM-1008,Tamsin Software,tamsinsoftware.io,Software,UK & Europe,Emerging,Bronze,2024-08-19
+CRM-1012,Halden Medical Grp.,haldenmedical.com,Healthcare,UK,Large corporate,Platinum,2016-09-12

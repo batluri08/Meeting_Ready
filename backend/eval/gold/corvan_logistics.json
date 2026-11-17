@@ -1,0 +1,22 @@
+{
+  "client": "Corvan Logistics",
+  "client_id": "CLT-003",
+  "meeting_id": "MTG-3",
+  "note": "Hand-written answer key: the facts a correct briefing must contain, by section.",
+  "facts": [
+    {"section": "profile", "pattern": "Logistics|freight", "why": "Who the client is"},
+    {"section": "profile", "pattern": "Ruth Adeyemi|Finance Director", "why": "Decision maker"},
+    {"section": "what_changed", "pattern": "depot|drivers|grocer", "why": "Growth since the last call"},
+    {"section": "commitments", "pattern": "card (programme )?review|ACT-3001", "why": "Overdue card review"},
+    {"section": "metrics", "pattern": "15(\\.0)?%", "why": "Revenue up 15.0% QoQ"},
+    {"section": "metrics", "pattern": "18%", "why": "Corporate Cards only 18% used"},
+    {"section": "metrics", "pattern": "overdue|ACT-3001|16 days", "why": "Action past due"},
+    {"section": "opportunities", "pattern": "supply chain finance|pay (small(er)? )?(suppliers|hauliers) faster", "why": "Supply chain finance"},
+    {"section": "opportunities", "pattern": "cards?[^.]*drivers|drivers[^.]*cards?|fuel", "why": "Cards for all drivers"},
+    {"section": "news", "pattern": "grocer|depot", "why": "Five-year grocer contract"},
+    {"section": "uncertainty", "pattern": "EM-3001", "why": "Email matched by domain (missing ID)"}
+  ],
+  "signals": ["action_past_due", "low_utilization", "revenue_qoq"],
+  "forbidden": ["Kestrel", "Halden", "Larkspur"],
+  "forbidden_docs": []
+}

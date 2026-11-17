@@ -1,0 +1,6 @@
+action_id,account_id,owner_user,description,due_date,status,source_ref
+ACT-1001,CRM-1001,U-SEN,Send revised FX hedging pricing to Tom Reyes,2026-11-01,open,EM-1001
+ACT-1002,CRM-1001,U-ANA,Share trade finance limit options for Rotterdam,2026-11-28,open,EM-1003
+ACT-2001,CRM-1002,U-SEN,Provide root-cause report on payroll file rejections,2026-11-20,open,EM-2001
+ACT-2002,CRM-1002,U-ANA,Send updated cash management fee schedule,2026-10-15,done,NT-2002
+ACT-3001,CRM-1003,U-ANA,Run corporate card programme review with fleet team,2026-10-31,open,NT-3001

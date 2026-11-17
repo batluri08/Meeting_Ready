@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+
+# Generated at run time (rebuilt by the data generator, ingestion and the app)
+backend/data/briefing.db
+backend/data/audit/
+backend/data/runs/
+backend/data/models/
+
+# Evaluation: keep only the latest scorecards (shown on the Evaluation page)
+backend/eval/results/*
+!backend/eval/results/latest-anthropic.json
+!backend/eval/results/latest-offline.json
+
+# Secrets
+.env
+.env.local
+
+# Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/tsconfig.tsbuildinfo
+
+# Local tools (the Archify skill is installed per machine; see README)
+.claude/
+.archify/

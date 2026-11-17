@@ -1,0 +1,15 @@
+contact_id,account_id,name,email,title,role,updated_at
+C-101,CRM-1001,Tom Reyes,t.reyes@kestrelfoods.com,Chief Financial Officer,Decision maker,2026-02-10
+C-102,CRM-1001,Ana Duarte,a.duarte@kestrelfoods.com,Head of Treasury,Day-to-day contact,2025-11-20
+C-103,CRM-1001,Sam Whitlow,procurement@kestrelfoods.com,Procurement Manager,Influencer,2025-06-01
+C-201,CRM-1002,Maria Lopes,maria.lopes@haldenmedical.com,Chief Financial Officer,Decision maker,2026-03-01
+C-209,CRM-1012,MARIA LOPES,Maria.Lopes@HaldenMedical.com,CFO,Decision maker,2026-03-04
+C-202,CRM-1002,Owen Pratt,o.pratt@haldenmedical.com,Group Treasurer,Day-to-day contact,2025-09-15
+C-203,CRM-1002,Jin Park,j.park@haldenmedical.com,Former CFO (left 2025),Inactive,2025-12-31
+C-301,CRM-1003,Ruth Adeyemi,r.adeyemi@corvanlogistics.com,Finance Director,Decision maker,2026-01-12
+C-302,CRM-1003,Marek Nowak,m.nowak@corvanlogistics.com,Fleet Operations Lead,User,2025-10-03
+C-401,CRM-1004,Helen Ford,h.ford@larkspurretail.co.uk,Treasurer,Decision maker,2025-07-08
+C-501,CRM-1005,Arjun Mehta,arjun@meridiantextiles.com,CFO,Decision maker,2025-04-22
+C-601,CRM-1006,Gareth Lloyd,g.lloyd@kestrelfuels.com,CFO,Decision maker,2025-10-30
+C-701,CRM-1007,Nina Patel,n.patel@pellow-eng.com,Finance Manager,Decision maker,2025-03-14
+C-801,CRM-1008,Chris Lowe,chris@tamsinsoftware.io,COO,Decision maker,2025-08-25

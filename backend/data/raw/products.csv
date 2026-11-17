@@ -1,0 +1,9 @@
+product_code,name,family
+CASH_MGMT,Cash Management,Transaction Banking
+TRADE_FIN,Trade Finance,Transaction Banking
+SUPPLY_FIN,Supply Chain Finance,Transaction Banking
+CARD,Corporate Cards,Transaction Banking
+PAYROLL,Payroll Services,Transaction Banking
+FX_HEDGE,FX Hedging,Markets
+TERM_LOAN,Term Loan,Lending
+ADVISORY,M&A Advisory,Advisory

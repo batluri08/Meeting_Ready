@@ -1,0 +1,708 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Client Meeting Briefing: System Architecture (Prototype)",
+    "locale": "en",
+    "output": "architecture/prototype/prototype.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "journey",
+        "label": "Main journey",
+        "focus": [
+          "banker",
+          "frontend",
+          "api",
+          "supervisor",
+          "writer",
+          "verifier",
+          "assemble"
+        ],
+        "note": "Banker opens a client; the supervisor runs the agents; the writer answers 7 questions; verified sections stream back."
+      },
+      {
+        "id": "agents",
+        "label": "Supervisor and 4 agents",
+        "focus": [
+          "supervisor",
+          "structured",
+          "email",
+          "notes",
+          "news",
+          "commitments"
+        ],
+        "note": "9 tasks: structured agent 5, email 1, notes 1, news 1, commitments check 1. Plain Python thread pool, no framework."
+      },
+      {
+        "id": "access",
+        "label": "Access controls",
+        "focus": [
+          "api",
+          "retrieval",
+          "qdrant",
+          "guard",
+          "gateway"
+        ],
+        "note": "Coverage check at the API, client and clearance filters in search, SQL rescoped by the guard, restricted data to approved models only."
+      },
+      {
+        "id": "guardrails",
+        "label": "Guardrails",
+        "focus": [
+          "gateway",
+          "email",
+          "verifier",
+          "assemble",
+          "guard"
+        ],
+        "note": "Name masking, untrusted-text wrapping, allowed citation ids, verifier, code-built uncertainty panel, SQL guard."
+      },
+      {
+        "id": "evaluation",
+        "label": "What evaluation tests",
+        "focus": [
+          "eval",
+          "ingest",
+          "retrieval",
+          "structured",
+          "writer",
+          "verifier",
+          "chat",
+          "guard"
+        ],
+        "note": "Traps test ingestion, labelled questions test search, answer key and RAGAS test writing, trick questions test chat and access."
+      }
+    ]
+  },
+  "components": [
+    {
+      "id": "eval",
+      "type": "backend",
+      "label": "Evaluation suite",
+      "sublabel": "tests every step · CLI run",
+      "tag": "23 checks · 16 traps",
+      "pos": [
+        500,
+        40
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "anthropic",
+      "type": "external",
+      "label": "Anthropic API",
+      "sublabel": "Opus 5.5 · Haiku 5.5",
+      "pos": [
+        1430,
+        40
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "guard",
+      "type": "security",
+      "label": "SQL guard",
+      "sublabel": "allow-list · client scope",
+      "tag": "read-only · 200 rows · 2 s",
+      "pos": [
+        260,
+        170
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "chat",
+      "type": "backend",
+      "label": "Chat agent (Opus)",
+      "sublabel": "route · text-to-SQL · dates",
+      "tag": "last 3 Q&A + evidence",
+      "pos": [
+        500,
+        170
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "gateway",
+      "type": "security",
+      "label": "AI gateway",
+      "sublabel": "masks names · routes Opus / Haiku · allowed-id schemas · audit",
+      "tag": "offline fallback",
+      "pos": [
+        1300,
+        170
+      ],
+      "size": [
+        400,
+        64
+      ]
+    },
+    {
+      "id": "banker",
+      "type": "external",
+      "label": "Relationship banker",
+      "sublabel": "analyst or senior user",
+      "pos": [
+        40,
+        320
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "frontend",
+      "type": "frontend",
+      "label": "Next.js 15 web app",
+      "sublabel": "React 19 · Tailwind v4",
+      "pos": [
+        260,
+        320
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "FastAPI service",
+      "sublabel": "REST + SSE · coverage check",
+      "tag": "403 if not your client",
+      "pos": [
+        500,
+        320
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "supervisor",
+      "type": "backend",
+      "label": "Supervisor (Opus)",
+      "sublabel": "plans 9 tasks, in parallel",
+      "tag": "retry once, then unavailable",
+      "pos": [
+        760,
+        290
+      ],
+      "size": [
+        170,
+        424
+      ]
+    },
+    {
+      "id": "email",
+      "type": "backend",
+      "label": "Email agent (Haiku)",
+      "sublabel": "asks · promises · concerns",
+      "tag": "untrusted-text wrapped",
+      "pos": [
+        1020,
+        290
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "notes",
+      "type": "backend",
+      "label": "Notes agent",
+      "sublabel": "notes + transcripts search",
+      "tag": "flags stale or conflicting",
+      "pos": [
+        1020,
+        380
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "news",
+      "type": "backend",
+      "label": "News agent",
+      "sublabel": "approved news, by story",
+      "tag": "outlets that disagree",
+      "pos": [
+        1020,
+        470
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "commitments",
+      "type": "backend",
+      "label": "Commitments check",
+      "sublabel": "code: asks vs open actions",
+      "tag": "waits for email + deals",
+      "pos": [
+        1020,
+        560
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "structured",
+      "type": "backend",
+      "label": "Structured agent",
+      "sublabel": "5 tasks: SQL + 8 rules",
+      "tag": "profile · signals · changes …",
+      "pos": [
+        1020,
+        650
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "retrieval",
+      "type": "backend",
+      "label": "Hybrid search",
+      "sublabel": "BM25 + vectors · RRF k=60",
+      "tag": "filters: client + clearance",
+      "pos": [
+        1300,
+        380
+      ],
+      "size": [
+        180,
+        154
+      ]
+    },
+    {
+      "id": "qdrant",
+      "type": "database",
+      "label": "Qdrant (in-memory)",
+      "sublabel": "384-d · copied at startup",
+      "pos": [
+        1530,
+        420
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "warehouse",
+      "type": "database",
+      "label": "SQLite warehouse",
+      "sublabel": "15 tables · chunks · vectors",
+      "tag": "single source of truth",
+      "pos": [
+        1300,
+        650
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "assemble",
+      "type": "backend",
+      "label": "Assemble + stream",
+      "sublabel": "adds uncertainty panel",
+      "tag": "code, not the model",
+      "pos": [
+        500,
+        560
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "verifier",
+      "type": "security",
+      "label": "Verifier",
+      "sublabel": "citation + number check",
+      "tag": "drops unsupported lines",
+      "pos": [
+        500,
+        800
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "writer",
+      "type": "backend",
+      "label": "Section writer (Opus)",
+      "sublabel": "7 answers, own evidence",
+      "tag": "answer · points · why",
+      "pos": [
+        760,
+        800
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "datapack",
+      "type": "external",
+      "label": "Synthetic data pack",
+      "sublabel": "15 CSV tables · 54 docs",
+      "tag": "16 planted traps",
+      "pos": [
+        760,
+        940
+      ],
+      "size": [
+        170,
+        64
+      ]
+    },
+    {
+      "id": "ingest",
+      "type": "backend",
+      "label": "Load + resolve",
+      "sublabel": "entity match · dedupe",
+      "tag": "review queue",
+      "pos": [
+        1020,
+        940
+      ],
+      "size": [
+        180,
+        64
+      ]
+    },
+    {
+      "id": "chunk",
+      "type": "backend",
+      "label": "Chunk + embed",
+      "sublabel": "220 words · bge-small",
+      "tag": "1-sentence overlap",
+      "pos": [
+        1300,
+        940
+      ],
+      "size": [
+        180,
+        64
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Agents (9 tasks, run in parallel)",
+      "wraps": [
+        "email",
+        "notes",
+        "news",
+        "commitments",
+        "structured"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Data and search",
+      "wraps": [
+        "retrieval",
+        "qdrant",
+        "warehouse"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Ingestion (run once)",
+      "wraps": [
+        "ingest",
+        "chunk"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "banker-app",
+      "from": "banker",
+      "to": "frontend",
+      "label": "browser",
+      "variant": "emphasis"
+    },
+    {
+      "id": "app-api",
+      "from": "frontend",
+      "to": "api",
+      "label": "REST · SSE",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-supervisor",
+      "from": "api",
+      "to": "supervisor",
+      "label": "start run",
+      "variant": "emphasis"
+    },
+    {
+      "id": "sup-email",
+      "from": "supervisor",
+      "to": "email"
+    },
+    {
+      "id": "sup-notes",
+      "from": "supervisor",
+      "to": "notes"
+    },
+    {
+      "id": "sup-news",
+      "from": "supervisor",
+      "to": "news"
+    },
+    {
+      "id": "sup-commitments",
+      "from": "supervisor",
+      "to": "commitments"
+    },
+    {
+      "id": "sup-structured",
+      "from": "supervisor",
+      "to": "structured"
+    },
+    {
+      "id": "email-gateway",
+      "from": "email",
+      "to": "gateway",
+      "label": "Haiku",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "notes-search",
+      "from": "notes",
+      "to": "retrieval",
+      "label": "search"
+    },
+    {
+      "id": "news-search",
+      "from": "news",
+      "to": "retrieval",
+      "label": "search"
+    },
+    {
+      "id": "structured-sql",
+      "from": "structured",
+      "to": "warehouse",
+      "label": "SQL"
+    },
+    {
+      "id": "search-vectors",
+      "from": "retrieval",
+      "to": "qdrant",
+      "label": "vectors"
+    },
+    {
+      "id": "warehouse-qdrant",
+      "from": "warehouse",
+      "to": "qdrant",
+      "label": "copy at start",
+      "fromSide": "right",
+      "toSide": "bottom"
+    },
+    {
+      "id": "sup-writer",
+      "from": "supervisor",
+      "to": "writer",
+      "label": "results",
+      "variant": "emphasis"
+    },
+    {
+      "id": "writer-verifier",
+      "from": "writer",
+      "to": "verifier",
+      "label": "statements",
+      "variant": "emphasis"
+    },
+    {
+      "id": "verifier-assemble",
+      "from": "verifier",
+      "to": "assemble",
+      "label": "verified",
+      "variant": "emphasis"
+    },
+    {
+      "id": "sup-assemble",
+      "from": "supervisor",
+      "to": "assemble",
+      "label": "findings"
+    },
+    {
+      "id": "assemble-api",
+      "from": "assemble",
+      "to": "api",
+      "label": "SSE events",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-chat",
+      "from": "api",
+      "to": "chat",
+      "label": "follow-ups"
+    },
+    {
+      "id": "chat-guard",
+      "from": "chat",
+      "to": "guard",
+      "label": "SELECT",
+      "variant": "security"
+    },
+    {
+      "id": "chat-gateway",
+      "from": "chat",
+      "to": "gateway",
+      "label": "Opus"
+    },
+    {
+      "id": "eval-chat",
+      "from": "eval",
+      "to": "chat",
+      "label": "trick Qs",
+      "variant": "dashed"
+    },
+    {
+      "id": "eval-judge",
+      "from": "eval",
+      "to": "gateway",
+      "label": "Haiku judge",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "top"
+    },
+    {
+      "id": "gateway-models",
+      "from": "gateway",
+      "to": "anthropic",
+      "label": "masked prompts",
+      "variant": "security"
+    },
+    {
+      "id": "data-ingest",
+      "from": "datapack",
+      "to": "ingest",
+      "label": "CSV + md"
+    },
+    {
+      "id": "ingest-chunk",
+      "from": "ingest",
+      "to": "chunk",
+      "label": "clean rows"
+    },
+    {
+      "id": "chunk-warehouse",
+      "from": "chunk",
+      "to": "warehouse",
+      "label": "write"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "1 supervisor, 4 agents, 9 tasks",
+      "items": [
+        "Structured agent: 5 tasks (profile, signals, changes, deals and actions, opportunities) with SQL and 8 importance rules",
+        "Email agent: Haiku reads 120 days of emails for asks, promises and concerns",
+        "Notes agent and news agent: hybrid search; flag stale statements and outlets that disagree",
+        "Commitments check: code compares client asks with open actions",
+        "Supervisor (Opus) plans; section writer (Opus) answers; verifier and uncertainty panel are code. Plain Python thread pool, no agent framework"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Access controls (where)",
+      "items": [
+        "API: you only see clients you cover (403 otherwise)",
+        "Search: filtered by client and clearance before ranking",
+        "SQL guard: every chat query rescoped to one client and your access, read-only",
+        "Restricted deals and documents: senior only; analysts see counts",
+        "Gateway: restricted content only to approved models"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Guardrails",
+      "items": [
+        "Names and emails masked before any prompt leaves; restored only for you",
+        "Documents wrapped as untrusted text; injection attempts detected and logged",
+        "Outputs may cite only the evidence ids they were given (JSON schema)",
+        "Verifier drops any sentence without a valid citation or with a number not in its source",
+        "Uncertainty panel built by code; offline fallback if the AI fails; every call audited"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "What evaluation tests, step by step",
+      "items": [
+        "Ingestion and client matching: 16 planted traps (aliases, look-alike company, duplicates)",
+        "Search: 22 labelled questions (recall@5 99%; right document first in chat 96%)",
+        "Agents and rules: flags match the answer key; key figures recomputed from raw CSVs",
+        "Writer and verifier: 47-fact answer key, 100% cited, RAGAS faithfulness 97% (Haiku judge)",
+        "Access and chat: leak scans of outputs, prompts and logs; 4 trick questions; answer relevancy"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Context management",
+      "items": [
+        "Writer sees only its own section's evidence, plus known conflicts",
+        "Every fact is an id (E1, E2…) with its source; outputs cite ids only",
+        "Emails from the last 120 days; notes top 3 plus neighbouring chunks",
+        "Chat keeps the client, the briefing's evidence and the last 3 Q&A"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Retrieval and chunking",
+      "items": [
+        "Chunks of at most 220 words, one-sentence overlap, split by document type",
+        "bge-small embeddings (384-d, local); BM25 + vectors fused with RRF (k=60)",
+        "Jina reranker on the top 20, chat only",
+        "Vectors kept in SQLite (single source of truth), copied into Qdrant at startup"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Tech stack",
+      "items": [
+        "Python 3.12 (uv), FastAPI, SQLite, qdrant-client, fastembed, rank_bm25, sqlglot, reportlab",
+        "Next.js 15, React 19, TypeScript, Tailwind v4",
+        "Anthropic API: Opus 5.5 and Haiku 5.5"
+      ]
+    }
+  ]
+}
