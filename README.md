@@ -6,16 +6,6 @@ Before a client meeting, a relationship team digs through CRM records, billing d
 and news to work out what has changed and what to raise. MeetingReady does that in about a minute: one
 briefing that answers the seven questions the team actually asks, with every sentence linked to its source.
 
-- **Nothing made up.** Numbers come from database queries, not the AI, and a verifier removes any sentence
-  its source doesn't support.
-- **Honest about gaps.** Conflicting, out-of-date and restricted information is flagged, never hidden.
-- **Safe by design.** People see only the clients they cover, and names are masked before anything reaches
-  the AI.
-
-A supervisor sends four agents to gather evidence in parallel, and an AI model reads the emails and
-writes the briefing. Follow-up chat, suggested tasks and PDF export are built in. A prototype, running on a
-synthetic data pack.
-
 ## Run it
 
 Needs Python 3.12 with [uv](https://docs.astral.sh/uv/), and Node 20+.
