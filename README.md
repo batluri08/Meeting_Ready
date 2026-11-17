@@ -30,8 +30,9 @@ uv run python -m app.ingest.run            # build the database and search index
 uv run uvicorn app.main:app --port 8000
 ```
 
-For live AI, copy `backend/.env.example` to `backend/.env` and set `ANTHROPIC_API_KEY`. Without it the app
-runs offline.
+For live AI, create `backend/.env` from the example and set `ANTHROPIC_API_KEY` in it
+(`copy .env.example .env` on Windows, `cp .env.example .env` on Mac/Linux, from `backend`). Without it the
+app runs offline.
 
 **2. Frontend** (terminal 2)
 
