@@ -1,14 +1,20 @@
 # MeetingReady
 
-Prepares a cited, trustworthy briefing before a client meeting from messy bank data: emails, call notes,
-CRM and billing records, news. Every sentence links to its source and every number is checked.
-This is a prototype running on a synthetic data pack.
+**Walk into every client meeting already briefed.**
 
-- Answers 7 questions per client: who they are, what changed, open asks, material metrics, opportunities,
-  news, and what is uncertain.
-- A supervisor runs 4 agents in parallel; Claude (Opus 5.5, Haiku 5.5) writes; a verifier checks.
-- Chat for follow-ups (guarded Text-to-SQL), tasks, PDF export, and an evaluation scorecard.
-- Works offline (rules and templates) when no API key is set.
+Before a client meeting, a relationship team digs through CRM records, billing data, emails, call notes
+and news to work out what has changed and what to raise. MeetingReady does that in about a minute: one
+briefing that answers the seven questions the team actually asks, with every sentence linked to its source.
+
+- **Nothing made up.** Numbers come from database queries, not the AI, and a verifier removes any sentence
+  its source doesn't support.
+- **Honest about gaps.** Conflicting, out-of-date and restricted information is flagged, never hidden.
+- **Safe by design.** People see only the clients they cover, and names are masked before anything reaches
+  the AI.
+
+A supervisor sends four agents to gather evidence in parallel; Claude Opus 5.5 writes and Haiku 5.5 reads
+the emails. Follow-up chat, suggested tasks and PDF export are built in. A prototype, running on a
+synthetic data pack.
 
 ## Run it
 
